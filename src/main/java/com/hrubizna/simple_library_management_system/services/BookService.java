@@ -8,5 +8,5 @@ public interface BookService {
     List<BookEntity> findAll();
     BookEntity findById(Long id);
     BookEntity update(BookEntity book);
-    void delete(Long id);
+    void deleteById(Long id);
 }

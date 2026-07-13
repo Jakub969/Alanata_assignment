@@ -2,6 +2,7 @@ package com.hrubizna.simple_library_management_system.controllers;
 
 import com.hrubizna.simple_library_management_system.domain.dto.CopyDto;
 import com.hrubizna.simple_library_management_system.domain.entities.BookCopyEntity;
+import com.hrubizna.simple_library_management_system.domain.entities.BookEntity;
 import com.hrubizna.simple_library_management_system.mappers.Mapper;
 import com.hrubizna.simple_library_management_system.services.CopyService;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class CopyController {
 
     @GetMapping(path = "/api/books/{id}/copies")
     public List<CopyDto> getCopies(@PathVariable Long id) {
-        List<BookCopyEntity> copies = copyService.findById(id);
+        List<BookCopyEntity> copies = copyService.findByBookId(id);
         return copies.stream().map(copyMapper::mapTo).collect(Collectors.toList());
     }
 
@@ -34,7 +35,7 @@ public class CopyController {
         BookCopyEntity copy = copyMapper.mapFrom(copyDto);
         copy.setId(id);
 
-        if (copy.getBookId() == null) {
+        if (copy.getBook() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         BookCopyEntity savedCopy = copyService.save(copy);
@@ -44,7 +45,7 @@ public class CopyController {
 
     @PutMapping(path = "/api/books/{id}/copies/{copyId}")
     public ResponseEntity<CopyDto> updateCopy(@PathVariable Long id, @RequestBody CopyDto copyDto, @PathVariable Long copyId) {
-        if (copyService.findById(copyId) == null) {
+        if (copyService.findByBookId(copyId) == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (!Objects.equals(id, copyDto.getId())) {

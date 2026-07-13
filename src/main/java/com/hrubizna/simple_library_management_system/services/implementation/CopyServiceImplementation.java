@@ -1,11 +1,14 @@
 package com.hrubizna.simple_library_management_system.services.implementation;
 
 import com.hrubizna.simple_library_management_system.domain.entities.BookCopyEntity;
+import com.hrubizna.simple_library_management_system.domain.entities.BookEntity;
 import com.hrubizna.simple_library_management_system.repositories.CopyRepository;
 import com.hrubizna.simple_library_management_system.services.CopyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class CopyServiceImplementation implements CopyService {
@@ -17,8 +20,10 @@ public class CopyServiceImplementation implements CopyService {
 
 
     @Override
-    public List<BookCopyEntity> findById(Long id) {
-        return copyRepository.findByBookId(id);
+    public List<BookCopyEntity> findByBookId(Long bookId) {
+        return StreamSupport
+                .stream(copyRepository.findByBookId(bookId).spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     @Override

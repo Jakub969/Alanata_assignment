@@ -1,10 +1,7 @@
 package com.hrubizna.simple_library_management_system.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -16,6 +13,11 @@ public class BookEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_id_seq")
+    @SequenceGenerator(
+            name = "books_id_seq",
+            sequenceName = "books_id_seq",
+            allocationSize = 1
+    )
     private Long id;
 
     private String title;

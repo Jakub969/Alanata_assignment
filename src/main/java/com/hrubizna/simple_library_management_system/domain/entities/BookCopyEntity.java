@@ -16,11 +16,16 @@ public class BookCopyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "copies_id_seq")
+    @SequenceGenerator(
+            name = "copies_id_seq",
+            sequenceName = "copies_id_seq",
+            allocationSize = 1
+    )
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "book_id")
-    private BookEntity bookId;
+    private BookEntity book;
 
     private boolean available;
 }
