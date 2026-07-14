@@ -7,11 +7,12 @@ import com.hrubizna.simple_library_management_system.domain.entities.BookEntity;
 import com.hrubizna.simple_library_management_system.mappers.Mapper;
 import com.hrubizna.simple_library_management_system.services.BookService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,9 +29,9 @@ public class BookController {
     }
 
     @GetMapping(path = "/api/books")
-    public List<BookDto> getAllBooks() {
-        List<BookEntity> books = bookService.findAll();
-        return books.stream().map(bookMapper::mapTo).collect(Collectors.toList());
+    public Page<BookDto> getAllBooks(Pageable pageable) {
+        Page<BookEntity> books = bookService.findAll(pageable);
+        return books.map(bookMapper::mapTo);
     }
 
     @PostMapping(path = "/api/books")

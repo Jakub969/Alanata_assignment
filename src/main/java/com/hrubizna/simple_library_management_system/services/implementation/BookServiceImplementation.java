@@ -3,6 +3,8 @@ package com.hrubizna.simple_library_management_system.services.implementation;
 import com.hrubizna.simple_library_management_system.domain.entities.BookEntity;
 import com.hrubizna.simple_library_management_system.repositories.BookRepository;
 import com.hrubizna.simple_library_management_system.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,11 @@ public class BookServiceImplementation implements BookService {
     @Override
     public List<BookEntity> findAll() {
         return StreamSupport.stream(bookRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<BookEntity> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     @Override

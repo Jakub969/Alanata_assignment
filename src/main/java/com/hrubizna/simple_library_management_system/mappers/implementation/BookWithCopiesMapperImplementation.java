@@ -10,6 +10,8 @@ import java.util.List;
 
 @Component
 public class BookWithCopiesMapperImplementation implements Mapper<BookEntity, BookWithCopiesDto> {
+
+    //Implementation of special mapper for book so it will also show all copies for it
     @Override
     public BookWithCopiesDto mapTo(BookEntity bookEntity) {
         List<CopyDto> copies = bookEntity.getCopies()

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Library</title>
+    <link rel="stylesheet" href="../../../../../../resources/static/style.css">
+</head>
+
+<body>
+
+<h1>Library</h1>
+<a th:href="@{/books(sortBy='title')}">Sort by Title</a>
+
+<a th:href="@{/books(sortBy='author')}">Sort by Author</a>
+
+<a th:href="@{/books(sortBy='publishedYear')}">Sort by Year</a>
+<table border="1">
+
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Published</th>
+        <th></th>
+    </tr>
+
+    <tr th:each="book : ${books.content}">
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.publishedYear}"></td>
+
+        <td>
+            <a th:href="@{/books/{id}(id=${book.id})}">
+                Details
+            </a>
+        </td>
+    </tr>
+
+</table>
+<div>
+
+    <a th:if="${books.hasPrevious()}"
+       th:href="@{/books(page=${books.number-1})}">
+        Previous
+    </a>
+
+    <span>
+        Page <span th:text="${books.number + 1}"></span>
+        of
+        <span th:text="${books.totalPages}"></span>
+    </span>
+
+    <a th:if="${books.hasNext()}"
+       th:href="@{/books(page=${books.number+1})}">
+        Next
+    </a>
+
+</div>
+</body>
+</html>
