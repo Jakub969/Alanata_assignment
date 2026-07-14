@@ -24,8 +24,9 @@ public class BookCopyEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", nullable = false)
     private BookEntity book;
 
-    private boolean available;
+    @Column(nullable = false)
+    private boolean available = true;
 }

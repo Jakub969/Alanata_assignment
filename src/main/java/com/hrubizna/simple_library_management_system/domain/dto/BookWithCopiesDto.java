@@ -1,22 +1,22 @@
 package com.hrubizna.simple_library_management_system.domain.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CopyDto {
+public class BookWithCopiesDto {
 
     private Long id;
-
-    @NotNull(message = "Book is required")
-    private BookDto book;
-
-    @NotNull(message = "Availability must be specified")
-    private boolean available;
+    private String title;
+    private String author;
+    private String isbn;
+    private Integer publishedYear;
+    private List<CopyDto> copies;
 }

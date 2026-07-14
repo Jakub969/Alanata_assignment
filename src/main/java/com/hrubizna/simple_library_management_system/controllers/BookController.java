@@ -2,9 +2,11 @@ package com.hrubizna.simple_library_management_system.controllers;
 
 
 import com.hrubizna.simple_library_management_system.domain.dto.BookDto;
+import com.hrubizna.simple_library_management_system.domain.dto.BookWithCopiesDto;
 import com.hrubizna.simple_library_management_system.domain.entities.BookEntity;
 import com.hrubizna.simple_library_management_system.mappers.Mapper;
 import com.hrubizna.simple_library_management_system.services.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,12 @@ import java.util.stream.Collectors;
 public class BookController {
 
     private final Mapper<BookEntity, BookDto> bookMapper;
+    private final Mapper<BookEntity, BookWithCopiesDto> bookWithCopiesMapper;
     private final BookService bookService;
 
-    public BookController(BookService bookService, Mapper<BookEntity, BookDto> bookMapper) {
+    public BookController(BookService bookService, Mapper<BookEntity, BookDto> bookMapper, Mapper<BookEntity, BookWithCopiesDto> bookWithCopiesMapper) {
         this.bookMapper = bookMapper;
+        this.bookWithCopiesMapper = bookWithCopiesMapper;
         this.bookService = bookService;
     }
 
@@ -30,31 +34,34 @@ public class BookController {
     }
 
     @PostMapping(path = "/api/books")
-    public ResponseEntity<BookDto> createBook(@RequestBody BookDto bookDto) {
+    public ResponseEntity<BookDto> createBook(@Valid @RequestBody BookDto bookDto) {
         BookEntity bookEntity = bookMapper.mapFrom(bookDto);
         BookEntity savedBookEntity = bookService.save(bookEntity);
         return new ResponseEntity<>(bookMapper.mapTo(savedBookEntity), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/api/books/{id}")
-    public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
+    public ResponseEntity<BookWithCopiesDto> getBookById(@PathVariable Long id) {
+
         BookEntity foundBookEntity = bookService.findById(id);
 
         if (foundBookEntity == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        BookDto bookDto = bookMapper.mapTo(foundBookEntity);
+        BookWithCopiesDto bookDto = bookWithCopiesMapper.mapTo(foundBookEntity);
+
         return new ResponseEntity<>(bookDto, HttpStatus.OK);
     }
 
     @PutMapping(path = "/api/books/{id}")
-    public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody BookDto bookDto) {
+    public ResponseEntity<BookDto> updateBook(@Valid @PathVariable Long id, @RequestBody BookDto bookDto) {
         BookEntity foundBookEntity = bookService.findById(id);
         if (foundBookEntity == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         BookEntity bookEntity = bookMapper.mapFrom(bookDto);
+        bookEntity.setId(id);
         BookEntity savedBookEntity = bookService.update(bookEntity);
         return new ResponseEntity<>(bookMapper.mapTo(savedBookEntity), HttpStatus.OK);
     }

@@ -1,7 +1,6 @@
 package com.hrubizna.simple_library_management_system.services.implementation;
 
 import com.hrubizna.simple_library_management_system.domain.entities.BookCopyEntity;
-import com.hrubizna.simple_library_management_system.domain.entities.BookEntity;
 import com.hrubizna.simple_library_management_system.repositories.CopyRepository;
 import com.hrubizna.simple_library_management_system.services.CopyService;
 import org.springframework.stereotype.Service;
@@ -37,5 +36,10 @@ public class CopyServiceImplementation implements CopyService {
             existingCopy.setAvailable(bookCopyEntity.isAvailable());
             return copyRepository.save(existingCopy);
         }).orElseThrow(() -> new RuntimeException("Copy of the book does not exist"));
+    }
+
+    @Override
+    public BookCopyEntity findById(Long id) {
+        return copyRepository.findById(id).orElseThrow(() -> new RuntimeException("Copy of the book does not exist"));
     }
 }

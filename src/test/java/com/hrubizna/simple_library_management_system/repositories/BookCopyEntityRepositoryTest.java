@@ -33,6 +33,7 @@ public class BookCopyEntityRepositoryTest {
     @Test
     public void testThatCopyCanBeCreatedAndRecalled() {
         BookEntity bookEntity = TestDataUtil.createTestBookEntityA();
+        bookTest.save(bookEntity);
         BookCopyEntity copyEntity = TestDataUtil.createTestBookCopyEntityA(bookEntity);
         copyTest.save(copyEntity);
         Optional<BookCopyEntity> result = copyTest.findById(copyEntity.getId());
@@ -57,6 +58,7 @@ public class BookCopyEntityRepositoryTest {
     @Test
     public void testThatCopyCanBeUpdated() {
         BookEntity bookEntity = TestDataUtil.createTestBookEntityA();
+        bookTest.save(bookEntity);
         BookCopyEntity copyEntityA = TestDataUtil.createTestBookCopyEntityA(bookEntity);
         copyTest.save(copyEntityA);
 

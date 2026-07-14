@@ -72,11 +72,4 @@ public class TestDataUtil {
                 .available(false)
                 .build();
     }
-
-    public static BookCopyEntity createTestBookCopyEntityD(final BookEntity bookEntity) {
-        return BookCopyEntity.builder()
-                .book(bookEntity)
-                .available(false)
-                .build();
-    }
 }
