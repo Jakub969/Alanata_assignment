@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,15 +34,13 @@ public class CopyController {
     }
 
     @PostMapping(path = "/api/books/{id}/copies")
-    public ResponseEntity<CopyDto> addCopy(@Valid @PathVariable Long id, @RequestBody CopyDto copyDto) {
+    public ResponseEntity<CopyDto> addCopy(@PathVariable Long id) {
         BookEntity book = bookService.findById(id);
 
         if (book == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        BookCopyEntity copy = copyMapper.mapFrom(copyDto);
-
+        BookCopyEntity copy = new BookCopyEntity();
         copy.setBook(book);
         BookCopyEntity savedCopy = copyService.save(copy);
         CopyDto savedCopyDto = copyMapper.mapTo(savedCopy);
@@ -57,15 +54,10 @@ public class CopyController {
         if (existingCopy == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        if (!Objects.equals(copyId, copyDto.getId())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
         BookCopyEntity bookCopyEntity = copyMapper.mapFrom(copyDto);
+        bookCopyEntity.setId(copyId);
 
         BookCopyEntity updatedCopyEntity = copyService.update(bookCopyEntity);
-
         return new ResponseEntity<>(
                 copyMapper.mapTo(updatedCopyEntity),
                 HttpStatus.OK

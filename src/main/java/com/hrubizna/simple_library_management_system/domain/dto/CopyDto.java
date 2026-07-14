@@ -14,9 +14,6 @@ public class CopyDto {
 
     private Long id;
 
-    @NotNull(message = "Book is required")
-    private BookDto book;
-
     @NotNull(message = "Availability must be specified")
-    private boolean available;
+    private Boolean available;
 }

@@ -34,7 +34,8 @@ public class CopyServiceImplementation implements CopyService {
     public BookCopyEntity update(BookCopyEntity bookCopyEntity) {
         return copyRepository.findById(bookCopyEntity.getId()).map(existingCopy -> {
             existingCopy.setAvailable(bookCopyEntity.isAvailable());
-            return copyRepository.save(existingCopy);
+            copyRepository.save(existingCopy);
+            return existingCopy;
         }).orElseThrow(() -> new RuntimeException("Copy of the book does not exist"));
     }
 

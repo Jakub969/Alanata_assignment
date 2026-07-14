@@ -36,10 +36,10 @@ public class BookServiceImplementation implements BookService {
     @Override
     public BookEntity update(BookEntity book) {
         return bookRepository.findById(book.getId()).map(existingBook -> {
-            existingBook.setTitle(book.getTitle());
-            existingBook.setAuthor(book.getAuthor());
-            existingBook.setIsbn(book.getIsbn());
-            existingBook.setPublishedYear(book.getPublishedYear());
+            if (book.getTitle() != null) existingBook.setTitle(book.getTitle()) ;
+            if (book.getAuthor() != null) existingBook.setAuthor(book.getAuthor());
+            if (book.getIsbn() != null) existingBook.setIsbn(book.getIsbn());
+            if (book.getPublishedYear() != null) existingBook.setPublishedYear(book.getPublishedYear());
             return bookRepository.save(existingBook);
         }).orElseThrow(() -> new RuntimeException("Book does not exist"));
     }

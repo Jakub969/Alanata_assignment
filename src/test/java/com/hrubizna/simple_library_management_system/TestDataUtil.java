@@ -54,7 +54,6 @@ public class TestDataUtil {
 
     public static CopyDto createTestCopyDtoA(final BookDto bookDto) {
         return CopyDto.builder()
-                .book(bookDto)
                 .available(true)
                 .build();
     }
