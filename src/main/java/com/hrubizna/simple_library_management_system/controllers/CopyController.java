@@ -6,6 +6,7 @@ import com.hrubizna.simple_library_management_system.domain.entities.BookEntity;
 import com.hrubizna.simple_library_management_system.mappers.Mapper;
 import com.hrubizna.simple_library_management_system.services.BookService;
 import com.hrubizna.simple_library_management_system.services.CopyService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,14 @@ public class CopyController {
         this.bookService = bookService;
     }
 
+    @Operation(summary = "Get available copies for a book")
     @GetMapping(path = "/api/books/{id}/copies")
     public List<CopyDto> getCopies(@PathVariable Long id) {
         List<BookCopyEntity> copies = copyService.findByBookId(id);
         return copies.stream().map(copyMapper::mapTo).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Add a copy for a book")
     @PostMapping(path = "/api/books/{id}/copies")
     public ResponseEntity<CopyDto> addCopy(@PathVariable Long id) {
         BookEntity book = bookService.findById(id);
@@ -47,6 +50,7 @@ public class CopyController {
         return new ResponseEntity<>(savedCopyDto, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Update the availability status of a book copy")
     @PutMapping(path = "/api/books/{id}/copies/{copyId}")
     public ResponseEntity<CopyDto> updateCopy(@Valid @PathVariable Long id, @RequestBody CopyDto copyDto, @PathVariable Long copyId) {
         BookCopyEntity existingCopy = copyService.findById(copyId);
