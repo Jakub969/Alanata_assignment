@@ -12,3 +12,10 @@ To view the simple frontend screen go to http://localhost:8081/books
 
 You can run tests that are located in src/test folder.
 
+## API Documentation
+
+After starting the application, open
+
+http://localhost:8081/swagger-ui/index.html
+
+to explore and test the REST API.
